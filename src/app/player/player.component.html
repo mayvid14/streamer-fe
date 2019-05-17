@@ -1,19 +1,19 @@
+<audio [src]="song.url" #player></audio>
 <div class="row">
 	<div class="col-8 offset-2 mt-4 card p-0">
-		<img src="../../assets/images/placeholder-song.png" alt="" class="card-img">
+		<img [src]="song.image" alt="" class="card-img">
 		<div class="card-img-overlay">
-			<h5 class="card-title">The Rain</h5>
-			<p class="card-text">Carole & Tuesday</p>
-
+			<h5 class="card-title">{{song.title}}</h5>
+			<p class="card-text">{{song.artist}}</p>
 		</div>
 		<div class="card-body m-0">
-			<button class="btn col-4"><img src="../../assets/images/start.png" alt=""></button>
-			<button class="btn col-4"><img src="../../assets/images/play.png" alt=""></button>
-			<button class="btn col-4"><img src="../../assets/images/end.png" alt=""></button>
+			<button class="btn col-4" (click)="resetSong()" *ngIf="!loaderDisplay"><img src="../../assets/images/start.png" alt=""></button>
+			<button class="btn col-4" (click)="play()" *ngIf="!loaderDisplay"><img src="../../assets/images/play.png" alt="" *ngIf="!isPlaying"><img src="../../assets/images/pause.png" alt="" *ngIf="isPlaying"></button>
+			<button class="btn col-4" (click)="forward()" *ngIf="!loaderDisplay"><img src="../../assets/images/end.png" alt=""></button>
 		</div>
 		<div class="card-footer">
-			<input type="range" name="ranger" id="ranger" class="custom-range">
-			<span class="float-left">00.00</span><span class="float-right">04:30</span>
+			<input type="range" name="ranger" id="ranger" class="custom-range" [(ngModel)]="currentTime" max="{{getDuration()}}" (change)="currTimePosChanged()">
+			<span class="float-left">{{currentTime | secondsToMinutes}}</span><span class="float-right">{{getDuration() | secondsToMinutes}}</span>
 		</div>
 	</div>
 </div>

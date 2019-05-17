@@ -115,7 +115,7 @@
       </div>
     </div>
     <div class="col-6">
-      <app-player [song]="selectedSong"></app-player>
+      <app-player *ngIf="currentSong" [song]="currentSong"></app-player>
     </div>
   </div>
 </div>
