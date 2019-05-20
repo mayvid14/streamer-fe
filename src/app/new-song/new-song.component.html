@@ -1,0 +1,31 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">Add a song</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
+    <div class="form-row">
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Title" [(ngModel)]="title" name="title">
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Artist" [(ngModel)]="artist" name="artist">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="image">Image</label>
+      <input type="file" class="form-control-file" id="image" accept="image/*" (change)="handleFileInput($event.target.files,'image')" name="image">
+    </div>
+    <div class="form-group">
+      <label for="audio">Audio</label>
+      <input type="file" class="form-control-file" id="audio" accept="audio/*" (change)="handleFileInput($event.target.files,'audio')" name="audio">
+    </div>
+  </form>
+  <p>{{msg}}</p>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-danger" (click)="bsModalRef.hide()">Cancel</button>
+  <button type="button" class="btn btn-outline-success" (click)="save()">Submit</button>
+</div>

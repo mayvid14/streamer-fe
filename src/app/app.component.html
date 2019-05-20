@@ -4,8 +4,11 @@
     <h1 class="display-4">Streamer</h1>
   </div>
   <div class="row justify-content-center">
-    <input type="text" class="col-6 form-control" placeholder="Search for songs" name="search" id="src"
+      <input type="text" class="col-6 form-control" placeholder="Search for songs" name="search" id="src"
       [(ngModel)]="searchTerm">
+      <button class="btn btn-sm float-right ml-3" (click)="newSong()" data-toggle="tooltip" data-placement="bottom" title="Add a new song">
+        <img src="../assets/images/add.png" alt="" class="button-image">
+      </button>
   </div>
   <div class="row">
     <div class="col-6">

@@ -8,19 +8,24 @@ import { AppComponent } from './app.component';
 import { PlayerComponent } from './player/player.component';
 import { SecondsToMinutesPipe } from './seconds-to-minutes.pipe';
 import { AudioService } from './audio.service';
+import { NewSongComponent } from './new-song/new-song.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayerComponent,
-    SecondsToMinutesPipe
+    SecondsToMinutesPipe,
+    NewSongComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ModalModule.forRoot()
   ],
+  entryComponents: [NewSongComponent],
   providers: [AudioService],
   bootstrap: [AppComponent]
 })

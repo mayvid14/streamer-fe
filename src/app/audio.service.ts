@@ -14,4 +14,13 @@ export class AudioService {
   getDefaultSong(): Observable<Music> {
     return this.http.get<Music>(`${this.defaultUrl}/track/def`);
   }
+
+  postSong(title: string, artist: string, audio: File, image: File): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('audio', audio);
+    formData.append('image', image);
+    formData.append('title', title);
+    formData.append('artist', artist);
+    return this.http.post(`${this.defaultUrl}/track`, formData);
+  }
 }
