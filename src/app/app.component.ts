@@ -3,6 +3,9 @@ import { AudioService } from './audio.service';
 import { Music } from './music';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NewSongComponent } from './new-song/new-song.component';
+import { fromEvent, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, map, retry } from 'rxjs/operators';
+import { ImgLoaderPipe } from './img-loader.pipe';
 
 @Component({
   selector: 'app-root',
@@ -11,15 +14,30 @@ import { NewSongComponent } from './new-song/new-song.component';
 })
 export class AppComponent implements OnInit {
   title = 'Streamer-fe';
+  songs: Array<Music>;
   currentSong: Music;
   bsModalRef: BsModalRef;
+  searchTerm = '';
 
-  constructor(private service: AudioService, private modalService: BsModalService) {}
+  constructor(private service: AudioService, private modalService: BsModalService, private imgLoader: ImgLoaderPipe) { }
 
   ngOnInit(): void {
-    this.service.getDefaultSong().subscribe(song => {
-      this.currentSong = song;
-      console.log(song);
+    this.songs = [];
+    this.currentSong = null;
+    fromEvent(document.getElementById('src'), 'keyup').pipe(
+      map((e: any) => e.target.value.trim().toLowerCase()),
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(f => f.length > 0 ? this.service.getSongs(f) : of([])),
+      retry(3)
+    ).subscribe((res: Array<Music>) => {
+      this.songs = res;
+      // this.songs.forEach(song => {
+      //   this.imgLoader.transform(song.image).subscribe(imgres => {
+      //     song.image = imgres;
+      //     console.log(song, imgres);
+      //   });
+      // });
     });
   }
 

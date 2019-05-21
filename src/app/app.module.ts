@@ -10,13 +10,17 @@ import { SecondsToMinutesPipe } from './seconds-to-minutes.pipe';
 import { AudioService } from './audio.service';
 import { NewSongComponent } from './new-song/new-song.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { ImgLoaderPipe } from './img-loader.pipe';
+import { AudioLoaderPipe } from './audio-loader.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayerComponent,
     SecondsToMinutesPipe,
-    NewSongComponent
+    NewSongComponent,
+    ImgLoaderPipe,
+    AudioLoaderPipe
   ],
   imports: [
     BrowserModule,
@@ -26,7 +30,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     ModalModule.forRoot()
   ],
   entryComponents: [NewSongComponent],
-  providers: [AudioService],
+  providers: [AudioService, ImgLoaderPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

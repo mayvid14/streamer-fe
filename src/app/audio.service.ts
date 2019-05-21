@@ -23,4 +23,13 @@ export class AudioService {
     formData.append('artist', artist);
     return this.http.post(`${this.defaultUrl}/track`, formData);
   }
+
+  getSongs(term: string): Observable<Array<Music>> {
+    const searchTerm = encodeURI(term);
+    return this.http.get<Array<Music>>(`${this.defaultUrl}/track/${searchTerm}`);
+  }
+
+  getImage(path: string): Observable<any> {
+    return this.http.post<any>(`${this.defaultUrl}/img`, { image: path }, { responseType: 'blob' as 'json'});
+  }
 }

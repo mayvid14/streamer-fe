@@ -21,7 +21,6 @@ export class NewSongComponent implements OnInit {
 
   handleFileInput(files: FileList, type: string) {
     type === 'image' ? this.imageFile = files.item(0) : this.audioFile = files.item(0);
-    console.log(this.audioFile, this.imageFile);
   }
 
   save(): void {

@@ -1,7 +1,7 @@
-<audio [src]="song.url" #player></audio>
+<audio [src]="song.url | audioLoader" #player></audio>
 <div class="row">
 	<div class="col-8 offset-2 mt-4 card p-0">
-		<img [src]="song.image" alt="" class="card-img">
+		<img [src]="song.image | imgLoader | async" alt="" class="card-img">
 		<div class="card-img-overlay">
 			<h5 class="card-title">{{song.title}}</h5>
 			<p class="card-text">{{song.artist}}</p>
