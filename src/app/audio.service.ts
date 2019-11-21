@@ -15,18 +15,19 @@ export class AudioService {
     return this.http.get<Music>(`${this.defaultUrl}/track/def`);
   }
 
-  postSong(title: string, artist: string, audio: File, image: File): Observable<any> {
+  postSong(title: string, artist: string, audio: File, image: File, duration: number): Observable<any> {
     const formData: FormData = new FormData();
     formData.append('audio', audio);
     formData.append('image', image);
     formData.append('title', title);
     formData.append('artist', artist);
+    formData.append('duration', duration+'');
     return this.http.post(`${this.defaultUrl}/track`, formData);
   }
 
-  getSongs(term: string): Observable<Array<Music>> {
+  getSongs(term?: string): Observable<Array<Music>> {
     const searchTerm = encodeURI(term);
-    return this.http.get<Array<Music>>(`${this.defaultUrl}/track/${searchTerm}`);
+    return term ? this.http.get<Array<Music>>(`${this.defaultUrl}/track/${searchTerm}`) : this.http.get<Array<Music>>(`${this.defaultUrl}/tracks`);
   }
 
   getImage(path: string): Observable<any> {

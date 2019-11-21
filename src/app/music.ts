@@ -4,4 +4,6 @@ export class Music {
     url: string;
     id: string;
     image: string;
+    imageUrl: string;
+    duration: string;
 }

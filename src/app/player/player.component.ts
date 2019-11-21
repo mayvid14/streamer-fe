@@ -8,7 +8,7 @@ import { Music } from '../music';
 })
 export class PlayerComponent implements OnInit {
   @Input() song: Music;
-  @ViewChild('player') player: ElementRef;
+  @ViewChild('player', { static: true }) player: ElementRef;
   loaderDisplay = false;
   isPlaying = false;
   currentTime = 0;
@@ -20,7 +20,6 @@ export class PlayerComponent implements OnInit {
     console.log('Initializing');
     this.player.nativeElement.addEventListener('playing', () => {
       this.isPlaying = true;
-      this.duration = Math.floor(this.player.nativeElement.duration);
     });
 
     this.player.nativeElement.addEventListener('pause', () => {
@@ -37,7 +36,7 @@ export class PlayerComponent implements OnInit {
 
     this.player.nativeElement.addEventListener('loadeddata', () => {
       this.loaderDisplay = false;
-      this.duration = Math.floor(this.player.nativeElement.duration);
+      this.duration = Math.floor(+this.song.duration);
     });
   }
 

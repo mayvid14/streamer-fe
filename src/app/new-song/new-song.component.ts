@@ -13,6 +13,7 @@ export class NewSongComponent implements OnInit {
   title = '';
   artist = '';
   msg = '';
+  duration = 0;
 
   constructor(public bsModalRef: BsModalRef, private service: AudioService) { }
 
@@ -20,12 +21,22 @@ export class NewSongComponent implements OnInit {
   }
 
   handleFileInput(files: FileList, type: string) {
-    type === 'image' ? this.imageFile = files.item(0) : this.audioFile = files.item(0);
+    if (type === 'image') {
+      this.imageFile = files.item(0);
+      return;
+    }
+    this.audioFile = files.item(0);
+    let obUrl = URL.createObjectURL(this.audioFile);
+    let audioElement = document.createElement("audio");
+    audioElement.setAttribute('src', obUrl);
+    audioElement.oncanplaythrough = ((e: any) => {
+      this.duration = e.currentTarget.duration;
+    });
   }
 
   save(): void {
-    this.service.postSong(this.title, this.artist, this.audioFile, this.imageFile).subscribe(res => {
-      if(res.success) {
+    this.service.postSong(this.title, this.artist, this.audioFile, this.imageFile, this.duration).subscribe(res => {
+      if (res.success) {
         this.bsModalRef.hide();
       } else {
         this.msg = 'An error occured';

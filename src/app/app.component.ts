@@ -4,7 +4,7 @@ import { Music } from './music';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NewSongComponent } from './new-song/new-song.component';
 import { fromEvent, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, map, retry } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, map, retry, tap } from 'rxjs/operators';
 import { ImgLoaderPipe } from './img-loader.pipe';
 
 @Component({
@@ -28,16 +28,31 @@ export class AppComponent implements OnInit {
       map((e: any) => e.target.value.trim().toLowerCase()),
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(f => f.length > 0 ? this.service.getSongs(f) : of([])),
-      retry(3)
+      switchMap((f: string) => f.length > 0 ? this.service.getSongs(f) : this.service.getSongs()),
+      retry(3),
+      tap((e: Music[]) => {
+        e.forEach(song => {
+          this.imgLoader.transform(song.image).subscribe(imgres => {
+            song.image = imgres;
+          });
+        });
+      })
     ).subscribe((res: Array<Music>) => {
       this.songs = res;
-      // this.songs.forEach(song => {
-      //   this.imgLoader.transform(song.image).subscribe(imgres => {
-      //     song.image = imgres;
-      //     console.log(song, imgres);
-      //   });
-      // });
+      this.songs.forEach(song => {
+        this.imgLoader.transform(song.image).subscribe(imgres => {
+          song.imageUrl = imgres;
+        });
+      });
+    });
+
+    this.service.getSongs().subscribe((res: Array<Music>) => {
+      this.songs = res;
+      this.songs.forEach(song => {
+        this.imgLoader.transform(song.image).subscribe(imgres => {
+          song.imageUrl = imgres;
+        });
+      });
     });
   }
 
